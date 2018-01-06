@@ -1,0 +1,572 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="KartalBlogDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AltKategoriler">
+          <Key>
+            <PropertyRef Name="AltKategoriID" />
+          </Key>
+          <Property Name="AltKategoriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AltKategoriAd" Type="nvarchar" MaxLength="50" />
+          <Property Name="AltKategoriAciklama" Type="nvarchar" MaxLength="50" />
+          <Property Name="Silindi" Type="bit" />
+          <Property Name="KategoriID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Etiketler">
+          <Key>
+            <PropertyRef Name="EtiketID" />
+          </Key>
+          <Property Name="EtiketID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EtiketAd" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EtiketAciklama" Type="nvarchar" MaxLength="50" />
+          <Property Name="Silindi" Type="bit" />
+        </EntityType>
+        <EntityType Name="Kategoriler">
+          <Key>
+            <PropertyRef Name="KategoriID" />
+          </Key>
+          <Property Name="KategoriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KategoriAd" Type="nvarchar" MaxLength="50" />
+          <Property Name="KategoriAciklama" Type="nvarchar" MaxLength="50" />
+          <Property Name="Silindi" Type="bit" />
+        </EntityType>
+        <EntityType Name="Kullanıcılar">
+          <Key>
+            <PropertyRef Name="KullaniciID" />
+          </Key>
+          <Property Name="KullaniciID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KullaniciAd" Type="nvarchar" MaxLength="50" />
+          <Property Name="KullaniciSoyad" Type="nvarchar" MaxLength="50" />
+          <Property Name="KullaniciSifre" Type="nvarchar" MaxLength="50" />
+          <Property Name="KullaniciTelefon" Type="nvarchar" MaxLength="50" />
+          <Property Name="KullaniciEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="KullaniciAdmin" Type="bit" />
+          <Property Name="Silindi" Type="bit" />
+        </EntityType>
+        <EntityType Name="Makale_Etiket">
+          <Key>
+            <PropertyRef Name="EtiketID" />
+            <PropertyRef Name="MakaleID" />
+          </Key>
+          <Property Name="EtiketID" Type="int" Nullable="false" />
+          <Property Name="MakaleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Makaleler">
+          <Key>
+            <PropertyRef Name="MakaleID" />
+          </Key>
+          <Property Name="MakaleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MakaleBaslik" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MakaleOnYazi" Type="nvarchar" MaxLength="500" />
+          <Property Name="MakaleAktifmi" Type="bit" />
+          <Property Name="MakaleIcerik" Type="text" Nullable="false" />
+          <Property Name="MakaleKapakResimUrl" Type="nvarchar" MaxLength="250" />
+          <Property Name="MakaleOkunmaSayisi" Type="int" />
+          <Property Name="MakaleTarihi" Type="datetime" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="KategoriID" Type="int" Nullable="false" />
+          <Property Name="EtiketID" Type="int" />
+          <Property Name="Silindi" Type="bit" />
+        </EntityType>
+        <EntityType Name="YorumCevap">
+          <Key>
+            <PropertyRef Name="CevapID" />
+          </Key>
+          <Property Name="CevapID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="YorumID" Type="int" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Silindi" Type="bit" />
+        </EntityType>
+        <EntityType Name="Yorumlar">
+          <Key>
+            <PropertyRef Name="YorumID" />
+          </Key>
+          <Property Name="YorumID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MakaleID" Type="int" />
+          <Property Name="CevapID" Type="int" />
+          <Property Name="Eposta" Type="nvarchar" MaxLength="50" />
+          <Property Name="YorumIcerik" Type="nvarchar" MaxLength="50" />
+          <Property Name="YorumTarihi" Type="datetime" />
+          <Property Name="YorumAktifmi" Type="bit" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Silindi" Type="bit" />
+        </EntityType>
+        <Association Name="FK_AltKategoriler_Kategoriler">
+          <End Role="Kategoriler" Type="Self.Kategoriler" Multiplicity="1" />
+          <End Role="AltKategoriler" Type="Self.AltKategoriler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategoriler">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="AltKategoriler">
+              <PropertyRef Name="KategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Makale_Etiket_Etiketler">
+          <End Role="Etiketler" Type="Self.Etiketler" Multiplicity="1" />
+          <End Role="Makale_Etiket" Type="Self.Makale_Etiket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Etiketler">
+              <PropertyRef Name="EtiketID" />
+            </Principal>
+            <Dependent Role="Makale_Etiket">
+              <PropertyRef Name="EtiketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Makale_Etiket_Makaleler">
+          <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="1" />
+          <End Role="Makale_Etiket" Type="Self.Makale_Etiket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Makaleler">
+              <PropertyRef Name="MakaleID" />
+            </Principal>
+            <Dependent Role="Makale_Etiket">
+              <PropertyRef Name="MakaleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Makaleler_Kategoriler">
+          <End Role="Kategoriler" Type="Self.Kategoriler" Multiplicity="1" />
+          <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategoriler">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="Makaleler">
+              <PropertyRef Name="KategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Makaleler_Kullanıcılar">
+          <End Role="Kullanıcılar" Type="Self.Kullanıcılar" Multiplicity="1" />
+          <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanıcılar">
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="Makaleler">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Yorumlar_Kullanıcılar">
+          <End Role="Kullanıcılar" Type="Self.Kullanıcılar" Multiplicity="0..1" />
+          <End Role="Yorumlar" Type="Self.Yorumlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanıcılar">
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="Yorumlar">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Yorumlar_Makaleler">
+          <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="0..1" />
+          <End Role="Yorumlar" Type="Self.Yorumlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Makaleler">
+              <PropertyRef Name="MakaleID" />
+            </Principal>
+            <Dependent Role="Yorumlar">
+              <PropertyRef Name="MakaleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Yorumlar_YorumCevap">
+          <End Role="YorumCevap" Type="Self.YorumCevap" Multiplicity="0..1" />
+          <End Role="Yorumlar" Type="Self.Yorumlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YorumCevap">
+              <PropertyRef Name="CevapID" />
+            </Principal>
+            <Dependent Role="Yorumlar">
+              <PropertyRef Name="CevapID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KartalBlogDBModelStoreContainer">
+          <EntitySet Name="AltKategoriler" EntityType="Self.AltKategoriler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Etiketler" EntityType="Self.Etiketler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kategoriler" EntityType="Self.Kategoriler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kullanıcılar" EntityType="Self.Kullanıcılar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Makale_Etiket" EntityType="Self.Makale_Etiket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Makaleler" EntityType="Self.Makaleler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="YorumCevap" EntityType="Self.YorumCevap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Yorumlar" EntityType="Self.Yorumlar" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AltKategoriler_Kategoriler" Association="Self.FK_AltKategoriler_Kategoriler">
+            <End Role="Kategoriler" EntitySet="Kategoriler" />
+            <End Role="AltKategoriler" EntitySet="AltKategoriler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Makale_Etiket_Etiketler" Association="Self.FK_Makale_Etiket_Etiketler">
+            <End Role="Etiketler" EntitySet="Etiketler" />
+            <End Role="Makale_Etiket" EntitySet="Makale_Etiket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Makale_Etiket_Makaleler" Association="Self.FK_Makale_Etiket_Makaleler">
+            <End Role="Makaleler" EntitySet="Makaleler" />
+            <End Role="Makale_Etiket" EntitySet="Makale_Etiket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Makaleler_Kategoriler" Association="Self.FK_Makaleler_Kategoriler">
+            <End Role="Kategoriler" EntitySet="Kategoriler" />
+            <End Role="Makaleler" EntitySet="Makaleler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Makaleler_Kullanıcılar" Association="Self.FK_Makaleler_Kullanıcılar">
+            <End Role="Kullanıcılar" EntitySet="Kullanıcılar" />
+            <End Role="Makaleler" EntitySet="Makaleler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorumlar_Kullanıcılar" Association="Self.FK_Yorumlar_Kullanıcılar">
+            <End Role="Kullanıcılar" EntitySet="Kullanıcılar" />
+            <End Role="Yorumlar" EntitySet="Yorumlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorumlar_Makaleler" Association="Self.FK_Yorumlar_Makaleler">
+            <End Role="Makaleler" EntitySet="Makaleler" />
+            <End Role="Yorumlar" EntitySet="Yorumlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorumlar_YorumCevap" Association="Self.FK_Yorumlar_YorumCevap">
+            <End Role="YorumCevap" EntitySet="YorumCevap" />
+            <End Role="Yorumlar" EntitySet="Yorumlar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KartalBlogDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AltKategoriler">
+          <Key>
+            <PropertyRef Name="AltKategoriID" />
+          </Key>
+          <Property Name="AltKategoriID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AltKategoriAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AltKategoriAciklama" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Silindi" Type="Boolean" />
+          <Property Name="KategoriID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kategoriler" Relationship="Self.FK_AltKategoriler_Kategoriler" FromRole="AltKategoriler" ToRole="Kategoriler" />
+        </EntityType>
+        <EntityType Name="Etiketler">
+          <Key>
+            <PropertyRef Name="EtiketID" />
+          </Key>
+          <Property Name="EtiketID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EtiketAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EtiketAciklama" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Silindi" Type="Boolean" />
+          <NavigationProperty Name="Makaleler" Relationship="Self.Makale_Etiket" FromRole="Etiketler" ToRole="Makaleler" />
+        </EntityType>
+        <EntityType Name="Kategoriler">
+          <Key>
+            <PropertyRef Name="KategoriID" />
+          </Key>
+          <Property Name="KategoriID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KategoriAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KategoriAciklama" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Silindi" Type="Boolean" />
+          <NavigationProperty Name="AltKategoriler" Relationship="Self.FK_AltKategoriler_Kategoriler" FromRole="Kategoriler" ToRole="AltKategoriler" />
+          <NavigationProperty Name="Makaleler" Relationship="Self.FK_Makaleler_Kategoriler" FromRole="Kategoriler" ToRole="Makaleler" />
+        </EntityType>
+        <EntityType Name="Kullanıcılar">
+          <Key>
+            <PropertyRef Name="KullaniciID" />
+          </Key>
+          <Property Name="KullaniciID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KullaniciAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KullaniciSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KullaniciSifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KullaniciTelefon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KullaniciEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KullaniciAdmin" Type="Boolean" />
+          <Property Name="Silindi" Type="Boolean" />
+          <NavigationProperty Name="Makaleler" Relationship="Self.FK_Makaleler_Kullanıcılar" FromRole="Kullanıcılar" ToRole="Makaleler" />
+          <NavigationProperty Name="Yorumlar" Relationship="Self.FK_Yorumlar_Kullanıcılar" FromRole="Kullanıcılar" ToRole="Yorumlar" />
+        </EntityType>
+        <EntityType Name="Makaleler">
+          <Key>
+            <PropertyRef Name="MakaleID" />
+          </Key>
+          <Property Name="MakaleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MakaleBaslik" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MakaleOnYazi" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MakaleAktifmi" Type="Boolean" />
+          <Property Name="MakaleIcerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MakaleKapakResimUrl" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MakaleOkunmaSayisi" Type="Int32" />
+          <Property Name="MakaleTarihi" Type="DateTime" Precision="3" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="KategoriID" Type="Int32" Nullable="false" />
+          <Property Name="EtiketID" Type="Int32" />
+          <Property Name="Silindi" Type="Boolean" />
+          <NavigationProperty Name="Kategoriler" Relationship="Self.FK_Makaleler_Kategoriler" FromRole="Makaleler" ToRole="Kategoriler" />
+          <NavigationProperty Name="Kullanıcılar" Relationship="Self.FK_Makaleler_Kullanıcılar" FromRole="Makaleler" ToRole="Kullanıcılar" />
+          <NavigationProperty Name="Yorumlar" Relationship="Self.FK_Yorumlar_Makaleler" FromRole="Makaleler" ToRole="Yorumlar" />
+          <NavigationProperty Name="Etiketler" Relationship="Self.Makale_Etiket" FromRole="Makaleler" ToRole="Etiketler" />
+        </EntityType>
+        <EntityType Name="YorumCevap">
+          <Key>
+            <PropertyRef Name="CevapID" />
+          </Key>
+          <Property Name="CevapID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="YorumID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Silindi" Type="Boolean" />
+          <NavigationProperty Name="Yorumlar" Relationship="Self.FK_Yorumlar_YorumCevap" FromRole="YorumCevap" ToRole="Yorumlar" />
+        </EntityType>
+        <EntityType Name="Yorumlar">
+          <Key>
+            <PropertyRef Name="YorumID" />
+          </Key>
+          <Property Name="YorumID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MakaleID" Type="Int32" />
+          <Property Name="CevapID" Type="Int32" />
+          <Property Name="Eposta" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="YorumIcerik" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="YorumTarihi" Type="DateTime" Precision="3" />
+          <Property Name="YorumAktifmi" Type="Boolean" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Silindi" Type="Boolean" />
+          <NavigationProperty Name="Kullanıcılar" Relationship="Self.FK_Yorumlar_Kullanıcılar" FromRole="Yorumlar" ToRole="Kullanıcılar" />
+          <NavigationProperty Name="Makaleler" Relationship="Self.FK_Yorumlar_Makaleler" FromRole="Yorumlar" ToRole="Makaleler" />
+          <NavigationProperty Name="YorumCevap" Relationship="Self.FK_Yorumlar_YorumCevap" FromRole="Yorumlar" ToRole="YorumCevap" />
+        </EntityType>
+        <Association Name="FK_AltKategoriler_Kategoriler">
+          <End Role="Kategoriler" Type="Self.Kategoriler" Multiplicity="1" />
+          <End Role="AltKategoriler" Type="Self.AltKategoriler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategoriler">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="AltKategoriler">
+              <PropertyRef Name="KategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Makaleler_Kategoriler">
+          <End Role="Kategoriler" Type="Self.Kategoriler" Multiplicity="1" />
+          <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategoriler">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="Makaleler">
+              <PropertyRef Name="KategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Makaleler_Kullanıcılar">
+          <End Role="Kullanıcılar" Type="Self.Kullanıcılar" Multiplicity="1" />
+          <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanıcılar">
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="Makaleler">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Yorumlar_Kullanıcılar">
+          <End Role="Kullanıcılar" Type="Self.Kullanıcılar" Multiplicity="0..1" />
+          <End Role="Yorumlar" Type="Self.Yorumlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanıcılar">
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="Yorumlar">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Yorumlar_Makaleler">
+          <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="0..1" />
+          <End Role="Yorumlar" Type="Self.Yorumlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Makaleler">
+              <PropertyRef Name="MakaleID" />
+            </Principal>
+            <Dependent Role="Yorumlar">
+              <PropertyRef Name="MakaleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Yorumlar_YorumCevap">
+          <End Role="YorumCevap" Type="Self.YorumCevap" Multiplicity="0..1" />
+          <End Role="Yorumlar" Type="Self.Yorumlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YorumCevap">
+              <PropertyRef Name="CevapID" />
+            </Principal>
+            <Dependent Role="Yorumlar">
+              <PropertyRef Name="CevapID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Makale_Etiket">
+          <End Role="Etiketler" Type="Self.Etiketler" Multiplicity="*" />
+          <End Role="Makaleler" Type="Self.Makaleler" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BlogEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AltKategoriler" EntityType="Self.AltKategoriler" />
+          <EntitySet Name="Etiketler" EntityType="Self.Etiketler" />
+          <EntitySet Name="Kategoriler" EntityType="Self.Kategoriler" />
+          <EntitySet Name="Kullanıcılar" EntityType="Self.Kullanıcılar" />
+          <EntitySet Name="Makaleler" EntityType="Self.Makaleler" />
+          <EntitySet Name="YorumCevap" EntityType="Self.YorumCevap" />
+          <EntitySet Name="Yorumlar" EntityType="Self.Yorumlar" />
+          <AssociationSet Name="FK_AltKategoriler_Kategoriler" Association="Self.FK_AltKategoriler_Kategoriler">
+            <End Role="Kategoriler" EntitySet="Kategoriler" />
+            <End Role="AltKategoriler" EntitySet="AltKategoriler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Makaleler_Kategoriler" Association="Self.FK_Makaleler_Kategoriler">
+            <End Role="Kategoriler" EntitySet="Kategoriler" />
+            <End Role="Makaleler" EntitySet="Makaleler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Makaleler_Kullanıcılar" Association="Self.FK_Makaleler_Kullanıcılar">
+            <End Role="Kullanıcılar" EntitySet="Kullanıcılar" />
+            <End Role="Makaleler" EntitySet="Makaleler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorumlar_Kullanıcılar" Association="Self.FK_Yorumlar_Kullanıcılar">
+            <End Role="Kullanıcılar" EntitySet="Kullanıcılar" />
+            <End Role="Yorumlar" EntitySet="Yorumlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorumlar_Makaleler" Association="Self.FK_Yorumlar_Makaleler">
+            <End Role="Makaleler" EntitySet="Makaleler" />
+            <End Role="Yorumlar" EntitySet="Yorumlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Yorumlar_YorumCevap" Association="Self.FK_Yorumlar_YorumCevap">
+            <End Role="YorumCevap" EntitySet="YorumCevap" />
+            <End Role="Yorumlar" EntitySet="Yorumlar" />
+          </AssociationSet>
+          <AssociationSet Name="Makale_Etiket" Association="Self.Makale_Etiket">
+            <End Role="Etiketler" EntitySet="Etiketler" />
+            <End Role="Makaleler" EntitySet="Makaleler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KartalBlogDBModelStoreContainer" CdmEntityContainer="BlogEntities">
+          <EntitySetMapping Name="AltKategoriler">
+            <EntityTypeMapping TypeName="KartalBlogDBModel.AltKategoriler">
+              <MappingFragment StoreEntitySet="AltKategoriler">
+                <ScalarProperty Name="AltKategoriID" ColumnName="AltKategoriID" />
+                <ScalarProperty Name="AltKategoriAd" ColumnName="AltKategoriAd" />
+                <ScalarProperty Name="AltKategoriAciklama" ColumnName="AltKategoriAciklama" />
+                <ScalarProperty Name="Silindi" ColumnName="Silindi" />
+                <ScalarProperty Name="KategoriID" ColumnName="KategoriID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Etiketler">
+            <EntityTypeMapping TypeName="KartalBlogDBModel.Etiketler">
+              <MappingFragment StoreEntitySet="Etiketler">
+                <ScalarProperty Name="EtiketID" ColumnName="EtiketID" />
+                <ScalarProperty Name="EtiketAd" ColumnName="EtiketAd" />
+                <ScalarProperty Name="EtiketAciklama" ColumnName="EtiketAciklama" />
+                <ScalarProperty Name="Silindi" ColumnName="Silindi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kategoriler">
+            <EntityTypeMapping TypeName="KartalBlogDBModel.Kategoriler">
+              <MappingFragment StoreEntitySet="Kategoriler">
+                <ScalarProperty Name="KategoriID" ColumnName="KategoriID" />
+                <ScalarProperty Name="KategoriAd" ColumnName="KategoriAd" />
+                <ScalarProperty Name="KategoriAciklama" ColumnName="KategoriAciklama" />
+                <ScalarProperty Name="Silindi" ColumnName="Silindi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kullanıcılar">
+            <EntityTypeMapping TypeName="KartalBlogDBModel.Kullanıcılar">
+              <MappingFragment StoreEntitySet="Kullanıcılar">
+                <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
+                <ScalarProperty Name="KullaniciAd" ColumnName="KullaniciAd" />
+                <ScalarProperty Name="KullaniciSoyad" ColumnName="KullaniciSoyad" />
+                <ScalarProperty Name="KullaniciSifre" ColumnName="KullaniciSifre" />
+                <ScalarProperty Name="KullaniciTelefon" ColumnName="KullaniciTelefon" />
+                <ScalarProperty Name="KullaniciEmail" ColumnName="KullaniciEmail" />
+                <ScalarProperty Name="KullaniciAdmin" ColumnName="KullaniciAdmin" />
+                <ScalarProperty Name="Silindi" ColumnName="Silindi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Makaleler">
+            <EntityTypeMapping TypeName="KartalBlogDBModel.Makaleler">
+              <MappingFragment StoreEntitySet="Makaleler">
+                <ScalarProperty Name="MakaleID" ColumnName="MakaleID" />
+                <ScalarProperty Name="MakaleBaslik" ColumnName="MakaleBaslik" />
+                <ScalarProperty Name="MakaleOnYazi" ColumnName="MakaleOnYazi" />
+                <ScalarProperty Name="MakaleAktifmi" ColumnName="MakaleAktifmi" />
+                <ScalarProperty Name="MakaleIcerik" ColumnName="MakaleIcerik" />
+                <ScalarProperty Name="MakaleKapakResimUrl" ColumnName="MakaleKapakResimUrl" />
+                <ScalarProperty Name="MakaleOkunmaSayisi" ColumnName="MakaleOkunmaSayisi" />
+                <ScalarProperty Name="MakaleTarihi" ColumnName="MakaleTarihi" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="KategoriID" ColumnName="KategoriID" />
+                <ScalarProperty Name="EtiketID" ColumnName="EtiketID" />
+                <ScalarProperty Name="Silindi" ColumnName="Silindi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="YorumCevap">
+            <EntityTypeMapping TypeName="KartalBlogDBModel.YorumCevap">
+              <MappingFragment StoreEntitySet="YorumCevap">
+                <ScalarProperty Name="CevapID" ColumnName="CevapID" />
+                <ScalarProperty Name="YorumID" ColumnName="YorumID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Silindi" ColumnName="Silindi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Yorumlar">
+            <EntityTypeMapping TypeName="KartalBlogDBModel.Yorumlar">
+              <MappingFragment StoreEntitySet="Yorumlar">
+                <ScalarProperty Name="YorumID" ColumnName="YorumID" />
+                <ScalarProperty Name="MakaleID" ColumnName="MakaleID" />
+                <ScalarProperty Name="CevapID" ColumnName="CevapID" />
+                <ScalarProperty Name="Eposta" ColumnName="Eposta" />
+                <ScalarProperty Name="YorumIcerik" ColumnName="YorumIcerik" />
+                <ScalarProperty Name="YorumTarihi" ColumnName="YorumTarihi" />
+                <ScalarProperty Name="YorumAktifmi" ColumnName="YorumAktifmi" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Silindi" ColumnName="Silindi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Makale_Etiket" TypeName="KartalBlogDBModel.Makale_Etiket" StoreEntitySet="Makale_Etiket">
+            <EndProperty Name="Etiketler">
+              <ScalarProperty Name="EtiketID" ColumnName="EtiketID" />
+            </EndProperty>
+            <EndProperty Name="Makaleler">
+              <ScalarProperty Name="MakaleID" ColumnName="MakaleID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
